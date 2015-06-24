@@ -50,7 +50,6 @@
 		});
 
 		wp_media_frame.open();
-
 		wp_media_frame.$el.addClass( 'hide-menu' );
 
 	});

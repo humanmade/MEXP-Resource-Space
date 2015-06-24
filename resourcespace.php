@@ -31,6 +31,24 @@ add_filter( 'mexp_services', function( array $services ) {
 	return $services;
 } );
 
-// add_action( 'admin_footer', function() {
-// 	wp_enqueue_script( 'resource-space-vc', plugins_url( 'vc/resource-space-vc.js', __FILE__ ), array( 'wpb_jscomposer_media_editor_js' ), null, true );
-// });
+/**
+ * Enqueue Visual Composer modification scripts if plugin is active.
+ * @return null
+ */
+function resource_space_vc_script() {
+
+	if ( ! ( defined( 'WPB_VC_VERSION' ) && WPB_VC_VERSION ) ) {
+		return;
+	}
+
+	wp_enqueue_script( 'resource-space-vc', plugins_url( 'js/resource-space-vc.js', __FILE__ ), array( 'wpb_jscomposer_media_editor_js' ), null, true );
+
+	wp_localize_script( 'resource-space-vc', 'resourceSpaceVC', array(
+		'stockImagesTabText'    => __( 'Stock Images', 'resourcespace' ),
+		'stockImagesInsertText' => __( 'Import', 'resourcespace' ),
+	) );
+
+}
+
+add_action( 'admin_print_scripts-post.php', 'resource_space_vc_script' );
+add_action( 'admin_print_scripts-post-new.php', 'resource_space_vc_script' );
