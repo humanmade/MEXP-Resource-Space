@@ -57,7 +57,7 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 				'previewsize'      => 'pre',
 				'prettyfieldnames' => true,
 				'original'         => true,
-				'results_per_page' => PJ_RESOURCE_SPACE_RESULTS_PER_PAGE,
+				'results_per_page' => 20,
 				'page'             => absint( $request['page'] ),
 				'restypes'         => 1,  // Restrict to images only.
 			) ),
