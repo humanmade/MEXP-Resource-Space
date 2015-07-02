@@ -51,16 +51,16 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 
 		// Build the request URL.
 		$api_url = add_query_arg(
-			array(
+			apply_filters( 'resourcespace_request_args', array(
 				'search'           => sanitize_text_field( $request['params']['q'] ),
 				'key'              => PJ_RESOURCE_SPACE_KEY,
 				'previewsize'      => 'pre',
 				'prettyfieldnames' => true,
 				'original'         => true,
-				'results_per_page' => 80,
+				'results_per_page' => PJ_RESOURCE_SPACE_RESULTS_PER_PAGE,
 				'page'             => absint( $request['page'] ),
 				'restypes'         => 1,  // Restrict to images only.
-			),
+			) ),
 			sprintf( '%s/plugins/api_search/', PJ_RESOURCE_SPACE_DOMAIN )
 		);
 
