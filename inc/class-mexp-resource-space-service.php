@@ -101,8 +101,19 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 			$item->set_date( $clean_data['date'] );
 			$item->set_date_format( $clean_data['date_format'] );
 			$item->set_id( $clean_data['id'] );
-			$item->set_thumbnail( $clean_data['thumbnail'] );
 			$item->set_url( $clean_data['url'] );
+
+			if ( defined( 'PJ_RESOURCE_SPACE_AUTHL' ) &&  defined( 'PJ_RESOURCE_SPACE_AUTHP' ) ) {
+
+				$bits    = parse_url( $clean_data['thumbnail'] );
+				$search  = $bits['scheme'] . '://';
+				$replace = sprintf( '%s://%s:%s@', $bits['scheme'], PJ_RESOURCE_SPACE_AUTHL, PJ_RESOURCE_SPACE_AUTHP );
+
+				$clean_data['thumbnail'] = str_replace( $search, $replace, $clean_data['thumbnail'] );
+
+			}
+
+			$item->set_thumbnail( $clean_data['thumbnail'] );
 
 			$response->add_item( $item );
 
