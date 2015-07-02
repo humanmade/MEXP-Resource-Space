@@ -19,9 +19,21 @@ class Resource_Space_Admin {
 	}
 
 	public function setup_actions() {
+
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'ajax_query_attachments_args', array( $this, 'ajax_query_attachments_args' ) );
+
+		if ( ! defined( 'PJ_RESOURCE_SPACE_DOMAIN' ) || ! defined( 'PJ_RESOURCE_SPACE_KEY' ) ) {
+
+			add_action( 'admin_notices', function() { ?>
+			    <div class="error">
+			        <p><?php _e( 'You must define the resource space domain and API key in your wp-config.php. See readme for more details.', 'resourcespace' ); ?></p>
+			    </div>
+		    <?php } );
+
+		}
+
 	}
 
 	function admin_menu() {
