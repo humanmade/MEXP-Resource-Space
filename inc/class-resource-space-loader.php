@@ -35,13 +35,8 @@ class Resource_Space_Loader {
 			wp_send_json_error( __( 'Empty resource id', 'resourcespace' ) );
 		}
 
-		$url         = PJ_RESOURCE_SPACE_DOMAIN . '/plugins/api_search/';
-		$key         = PJ_RESOURCE_SPACE_KEY;
-		$auth_args   = array(
-			'headers' => array(
-				'Authorization' => 'Basic ' . base64_encode( PJ_RESOURCE_SPACE_AUTHL . ':' . PJ_RESOURCE_SPACE_AUTHP )
-			)
-		);
+		$url = PJ_RESOURCE_SPACE_DOMAIN . '/plugins/api_search/';
+		$key = PJ_RESOURCE_SPACE_KEY;
 
 		$url = add_query_arg( array(
 			'key'              => $key,
@@ -50,7 +45,14 @@ class Resource_Space_Loader {
 			'previewsize'      => 'sit',
 		), $url );
 
-		$response = wp_remote_get( $url, $auth_args );
+		$request_args = array( 'headers' => array() );
+
+		// Pass basic auth header if available.
+		if ( defined( 'PJ_RESOURCE_SPACE_AUTHL' ) &&  defined( 'PJ_RESOURCE_SPACE_AUTHP' ) ) {
+			$request_args['headers']['Authorization'] = 'Basic ' . base64_encode( PJ_RESOURCE_SPACE_AUTHL . ':' . PJ_RESOURCE_SPACE_AUTHP );
+		}
+
+		$response = wp_remote_get( $url, $request_args );
 
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 			$data = json_decode( wp_remote_retrieve_body( $response ) );
@@ -64,7 +66,7 @@ class Resource_Space_Loader {
 		$original_filename = $data[0]->Original_filename;
 		$file              = get_temp_dir() . $original_filename;
 
-		$response = wp_remote_get( $downloadurl, $auth_args );
+		$response = wp_remote_get( $downloadurl, $request_args );
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 
 			file_put_contents( $file, wp_remote_retrieve_body( $response ) );

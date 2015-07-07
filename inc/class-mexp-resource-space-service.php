@@ -64,7 +64,14 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 			sprintf( '%s/plugins/api_search/', PJ_RESOURCE_SPACE_DOMAIN )
 		);
 
-		$api_response = wp_remote_get( $api_url );
+		$request_args = array( 'headers' => array() );
+
+		// Pass basic auth header if available.
+		if ( defined( 'PJ_RESOURCE_SPACE_AUTHL' ) &&  defined( 'PJ_RESOURCE_SPACE_AUTHP' ) ) {
+			$request_args['headers']['Authorization'] = 'Basic ' . base64_encode( PJ_RESOURCE_SPACE_AUTHL . ':' . PJ_RESOURCE_SPACE_AUTHP );
+		}
+
+		$api_response = wp_remote_get( $api_url, $request_args );
 
 		if ( 200 !== wp_remote_retrieve_response_code( $api_response ) ) {
 			return $api_response;
@@ -103,14 +110,12 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 			$item->set_id( $clean_data['id'] );
 			$item->set_url( $clean_data['url'] );
 
+			// Prepend the basic auth credentials to the image URL.
 			if ( defined( 'PJ_RESOURCE_SPACE_AUTHL' ) &&  defined( 'PJ_RESOURCE_SPACE_AUTHP' ) ) {
-
 				$bits    = parse_url( $clean_data['thumbnail'] );
 				$search  = $bits['scheme'] . '://';
 				$replace = sprintf( '%s://%s:%s@', $bits['scheme'], PJ_RESOURCE_SPACE_AUTHL, PJ_RESOURCE_SPACE_AUTHP );
-
 				$clean_data['thumbnail'] = str_replace( $search, $replace, $clean_data['thumbnail'] );
-
 			}
 
 			$item->set_thumbnail( $clean_data['thumbnail'] );
