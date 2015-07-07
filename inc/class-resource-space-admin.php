@@ -64,12 +64,7 @@ class Resource_Space_Admin {
 
 			$deps = array( 'jquery', 'backbone', 'media' );
 			wp_enqueue_script( 'resource-space-admin', PJ_RESOURCE_SPACE_PLUGIN_URL . '/js/admin.js', $deps, PJ_RESOURCESPACE_PLUGIN_VERSION, true );
-
-			// wp_localize_script( 'resource-space-admin', 'resourceSpace', array(
-			// 	'queryVars' => (object) array(
-			// 	),
-			// ) );
-
+			
 		}
 
 	}
