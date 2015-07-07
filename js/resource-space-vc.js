@@ -33,7 +33,7 @@
 						var contentRegion = wp.media.frame.views.get( '.media-frame-content' );
 
 						if ( contentRegion[0] ) {
-							contentRegion.collection.add( this.attachments );
+							contentRegion[0].collection.add( this.attachments );
 						}
 
 						this.complete();
