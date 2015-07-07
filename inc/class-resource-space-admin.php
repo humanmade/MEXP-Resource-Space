@@ -49,7 +49,7 @@ class Resource_Space_Admin {
 	}
 
 	function render_page() {
-		include( RESOURCE_SPACE_PLUGIN_DIR . '/templates/admin-page.php' );
+		include( PJ_RESOURCE_SPACE_PLUGIN_DIR . '/templates/admin-page.php' );
 	}
 
 	function admin_enqueue_scripts() {
@@ -63,7 +63,7 @@ class Resource_Space_Admin {
 			wp_enqueue_script( 'media' );
 
 			$deps = array( 'jquery', 'backbone', 'media' );
-			wp_enqueue_script( 'resource-space-admin', RESOURCE_SPACE_PLUGIN_URL . '/js/admin.js', $deps, RESOURCESPACE_PLUGIN_VERSION, true );
+			wp_enqueue_script( 'resource-space-admin', PJ_RESOURCE_SPACE_PLUGIN_URL . '/js/admin.js', $deps, PJ_RESOURCESPACE_PLUGIN_VERSION, true );
 
 			// wp_localize_script( 'resource-space-admin', 'resourceSpace', array(
 			// 	'queryVars' => (object) array(
