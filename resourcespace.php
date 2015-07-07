@@ -13,6 +13,7 @@ define( 'RESOURCESPACE_PLUGIN_VERSION', '0.1' );
 define( 'RESOURCE_SPACE_AJAX_ACTION', 'pj_rs_get_resource' );
 define( 'RESOURCE_SPACE_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
+defined( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE' ) or define( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE', 20 );
 
 if ( ! class_exists( 'MEXP_Service' ) ) {
 	wp_die( __( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
