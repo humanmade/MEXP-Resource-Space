@@ -20,7 +20,7 @@ class Resource_Space_Loader {
 	}
 
 	public function __construct() {
-		add_action( 'wp_ajax_' . RESOURCE_SPACE_AJAX_ACTION, array( $this, 'ajax_get_image' ) );
+		add_action( 'wp_ajax_' . PJ_RESOURCE_SPACE_AJAX_ACTION, array( $this, 'ajax_get_image' ) );
 	}
 
 	/**
