@@ -25,3 +25,17 @@ GNU General Public License for more details.
 .mexp-content-resource-space .mexp-item-content {
 	word-wrap: break-word;
 }
+
+.resourcespace-loading {
+	position: relative;
+	pointer-events: none;
+	opacity: 0.3;
+	-webkit-filter: grayscale(1);
+}
+
+.resourcespace-loading:before {
+	content: ' ';
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	background: transparent;
+}

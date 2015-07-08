@@ -39,6 +39,7 @@
 			toggleLoading = function( enable ) {
 				$spinner.toggleClass( 'is-active', enable );
 				$button.attr( 'disabled', enable );
+				$('.mexp-items').toggleClass( 'resourcespace-loading', enable );
 			}
 
 			/**
