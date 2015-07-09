@@ -10,7 +10,6 @@ Domain Path: /languages
 */
 
 define( 'PJ_RESOURCESPACE_PLUGIN_VERSION', '0.1' );
-define( 'PJ_RESOURCE_SPACE_AJAX_ACTION', 'pj_rs_get_resource' );
 define( 'PJ_RESOURCE_SPACE_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
