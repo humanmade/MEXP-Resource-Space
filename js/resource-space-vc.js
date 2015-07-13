@@ -33,10 +33,13 @@
 						var contentRegion = wp.media.frame.views.get( '.media-frame-content' );
 
 						if ( contentRegion[0] ) {
-							contentRegion[0].collection.add( this.attachments );
+							_.each( this.attachments, function( attachment ) {
+								contentRegion[0].collection.add( attachment );
+							} );
 						}
 
 						this.complete();
+
 					}
 
 					var resourceSpaceFrame = wp.media.frames.resourceSpaceFrame = wp.media({

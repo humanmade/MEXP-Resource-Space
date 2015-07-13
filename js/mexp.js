@@ -33,7 +33,9 @@
 				toggleLoading( false );
 				selection.reset();
 				self.frame.close();
-				delete this.inserting;
+				delete self.inserting;
+				$( '.mexp-content-resource-space-all .selected').removeClass( 'selected' );
+				$( '.mexp-content-resource-space-all .details').removeClass( 'details' );
 			}
 
 			toggleLoading = function( enable ) {
@@ -149,8 +151,10 @@
 
 			media.view.MEXP.__super__.fetchedSuccess.apply( this, [response] );
 
-			if ( response.meta.page >= response.meta.total_pages  ) {
-				jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', true );
+			if ( 'page' in response.meta && 'total_pages' in response.meta  ) {
+				if ( response.meta.page >= response.meta.total_pages  ) {
+					jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', true );
+				}
 			}
 
 		}
