@@ -64,8 +64,7 @@ class Resource_Space_Loader {
 		// All good, continue
 
 		$downloadurl       = $data[0]->preview;
-		$original_filename = $data[0]->Original_filename;
-		$file              = get_temp_dir() . $original_filename;
+		$file              = get_temp_dir() . sanitize_file_name( $data[0]->Original_filename );
 
 		$response = wp_remote_get( $downloadurl, $request_args );
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
