@@ -141,5 +141,20 @@
 
 	});
 
+	var view = media.view.MEXP
+
+	media.view.MEXP = view.extend( {
+
+		fetchedSuccess: function( response ) {
+
+			media.view.MEXP.__super__.fetchedSuccess.apply( this, [response] );
+
+			if ( response.meta.page >= response.meta.total_pages  ) {
+				jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', true );
+			}
+
+		}
+
+	} );
 
 })( window, this.jQuery );

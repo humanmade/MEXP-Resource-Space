@@ -59,7 +59,7 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 				'original'         => true,
 				'results_per_page' => PJ_RESOURCE_SPACE_RESULTS_PER_PAGE,
 				'page'             => absint( $request['page'] ),
-				'restypes'         => 1,  // Restrict to images only.
+				'restypes'         => 1, // Restrict to images only.
 			) ),
 			sprintf( '%s/plugins/api_search/', PJ_RESOURCE_SPACE_DOMAIN )
 		);
@@ -122,6 +122,11 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 			$response->add_item( $item );
 
 		}
+
+		$response->add_meta( 'per_page', $response_data->pagination->per_page );
+		$response->add_meta( 'page', $response_data->pagination->page );
+		$response->add_meta( 'total_pages', $response_data->pagination->total_pages );
+		$response->add_meta( 'total_resources', $response_data->pagination->total_resources );
 
 		return $response;
 	}
