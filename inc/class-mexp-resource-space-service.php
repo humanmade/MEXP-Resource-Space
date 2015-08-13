@@ -103,6 +103,7 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 				} elseif ( ! isset( $dirty_data[ $field ] ) && isset( $args['default'] ) ) {
 					$clean_data[ $field ] = $args['default'];
 				}
+
 			}
 
 			$item = new MEXP_Response_Item();

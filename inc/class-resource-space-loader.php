@@ -43,6 +43,7 @@ class Resource_Space_Loader {
 			'search'           => $resource_id,
 			'prettyfieldnames' => 1,
 			'previewsize'      => 'pre',
+			'original'         => true,
 		), $url );
 
 		$request_args = array( 'headers' => array() );
@@ -64,6 +65,10 @@ class Resource_Space_Loader {
 			wp_send_json_error( __( 'Resource not found', 'resourcespace' ) );
 		}
 
+		// Request original URL.
+		// $attachment_id = $this->sideload_image( $data[0]->original );
+
+		// Request preview size.
 		$attachment_id = $this->sideload_image( $data[0]->preview );
 
 		if ( is_wp_error( $attachment_id ) ) {
