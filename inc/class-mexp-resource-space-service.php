@@ -103,6 +103,7 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 				} elseif ( ! isset( $dirty_data[ $field ] ) && isset( $args['default'] ) ) {
 					$clean_data[ $field ] = $args['default'];
 				}
+
 			}
 
 			$item = new MEXP_Response_Item();
@@ -111,12 +112,6 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 			$item->set_date_format( $clean_data['date_format'] );
 			$item->set_id( $clean_data['id'] );
 			$item->set_url( $clean_data['url'] );
-
-			$clean_data['thumbnail'] = add_query_arg( array(
-				'action' => 'pj_rs_proxy_resource',
-				'src'    => urlencode( $dirty_data['thumbnail'] ),
-			), admin_url( 'admin-ajax.php' ) );
-
 			$item->set_thumbnail( $clean_data['thumbnail'] );
 
 			$response->add_item( $item );

@@ -28,7 +28,7 @@ class Resource_Space_Admin {
 
 			add_action( 'admin_notices', function() { ?>
 			    <div class="error">
-			        <p><?php _e( 'You must define the resource space domain and API key in your wp-config.php. See readme for more details.', 'resourcespace' ); ?></p>
+			        <p><?php esc_html_e( 'You must define the resource space domain and API key in your wp-config.php. See readme for more details.', 'resourcespace' ); ?></p>
 			    </div>
 		    <?php } );
 
@@ -76,7 +76,7 @@ class Resource_Space_Admin {
 				array(
 					'key'     => 'resource_space',
 					'compare' => 'EXISTS',
-				)
+				),
 			);
 		}
 
