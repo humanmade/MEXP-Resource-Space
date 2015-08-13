@@ -69,7 +69,7 @@ class Resource_Space_Loader {
 		// $attachment_id = wpcom_vip_download_image( $data[0]->original );
 
 		// Request preview size.
-		$attachment_id = wpcom_vip_download_image( $data[0]->preview );
+		$attachment_id = wpcom_vip_download_image( $data[0]->preview, $parent_post_id );
 
 		if ( is_wp_error( $attachment_id ) ) {
 			wp_send_json_error( $attachment_id->get_error_message() );
