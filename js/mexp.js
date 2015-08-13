@@ -107,7 +107,13 @@
 				}).done( function( response ) {
 
 					if ( ! response.success ) {
-						alert( response.data );
+
+						if ( 'data' in response ) {
+							alert( response.data );
+						} else {
+							alert( 'Failed to import image.' );
+						}
+
 						return;
 					}
 
@@ -121,7 +127,6 @@
 
 						// Allow overriding insert callback.
 						if ( self.frame.options.resourceSpaceInsertCallback ) {
-
 							callback = self.frame.options.resourceSpaceInsertCallback
 						}
 

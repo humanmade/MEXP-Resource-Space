@@ -91,6 +91,15 @@
 
 						}, 1 );
 
+						// Slightly hcky workaround because for some reason the load more
+						// button doesn't exist when the event callback is attached.
+						$('#resource-space-loadmore').on('click', function(e) {
+							var view = wp.media.frames.resourceSpaceFrame.views.get('.media-frame-content' );
+							if ( view.length ) {
+								view[0].paginate(e);
+							}
+						} );
+
 					}, this );
 
 					// Create the toolbar.

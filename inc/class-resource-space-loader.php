@@ -43,7 +43,7 @@ class Resource_Space_Loader {
 			'key'              => $key,
 			'search'           => $resource_id,
 			'prettyfieldnames' => 1,
-			'previewsize'      => 'sit',
+			'original'         => true,
 		), $url );
 
 		$request_args = array( 'headers' => array() );
@@ -61,12 +61,17 @@ class Resource_Space_Loader {
 			wp_send_json_error( __( 'Unable to query API', 'resourcespace' ) );
 		}
 
+		if ( count( $data ) < 1 ) {
+			wp_send_json_error( __( 'Resource not found', 'resourcespace' ) );
+		}
+
 		// All good, continue
+		$file = get_temp_dir() . sanitize_file_name( $data[0]->Original_filename );
 
-		$downloadurl       = $data[0]->preview;
-		$file              = get_temp_dir() . sanitize_file_name( $data[0]->Original_filename );
+		// TODO test. Advice from Kirill was to use the users cookie.
+		// Hopefully it isn't required as this isn't as robust as using basic auth.
+		$response = wp_remote_get( $data[0]->original_link, $request_args );
 
-		$response = wp_remote_get( $downloadurl, $request_args );
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 
 			file_put_contents( $file, wp_remote_retrieve_body( $response ) );
@@ -79,26 +84,22 @@ class Resource_Space_Loader {
 
 				$wp_filetype = wp_check_filetype( $filename, null );
 
-				date_default_timezone_set( 'Europe/London' );
-				$d = new DateTime();
-
 				$attachment = array(
 					'post_mime_type' => $wp_filetype['type'],
 					'post_parent'    => 0,
 					'post_title'     => $data[0]->{'Légende'},
-					'post_content'   => 'Downloaded ' . $d->format( 'd/m/Y \a\t H:i:s' ),
-					'post_status'    => 'inherit'
+					'post_content'   => 'Downloaded ' . current_time( 'd/m/Y \a\t H:i:s' ),
+					'post_status'    => 'inherit',
 				);
 
 				$attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $parent_post_id );
 
 				if ( ! is_wp_error( $attachment_id ) ) {
-					require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
 
-					/* Add some attachment data */
-					$attachment_data                                    = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
-					$attachment_data['image_meta']['created_timestamp'] = $d->format( 'Y-m-d H:i:s' );
-					//$attachment_data['image_meta']['copyright'] = 'Yelster ' . $d->format('Y');
+					require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/image.php' );
+
+					$attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
+					$attachment_data['image_meta']['created_timestamp'] = current_time( 'Y-m-d H:i:s', true );
 
 					wp_update_attachment_metadata( $attachment_id, $attachment_data );
 

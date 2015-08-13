@@ -112,10 +112,13 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 			$item->set_id( $clean_data['id'] );
 			$item->set_url( $clean_data['url'] );
 
-			$clean_data['thumbnail'] = add_query_arg( array(
-				'action' => 'pj_rs_proxy_resource',
-				'src'    => urlencode( $dirty_data['thumbnail'] ),
-			), admin_url( 'admin-ajax.php' ) );
+			// Proxy image requests.
+			if ( defined( 'PJ_RESOURCE_SPACE_PROXY_THUMBNAILS' ) && PJ_RESOURCE_SPACE_PROXY_THUMBNAILS ) {
+				$clean_data['thumbnail'] = add_query_arg( array(
+					'action' => 'pj_rs_proxy_resource',
+					'src'    => urlencode( $dirty_data['thumbnail'] ),
+				), admin_url( 'admin-ajax.php' ) );
+			}
 
 			$item->set_thumbnail( $clean_data['thumbnail'] );
 
