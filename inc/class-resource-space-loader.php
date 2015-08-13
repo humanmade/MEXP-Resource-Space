@@ -21,7 +21,6 @@ class Resource_Space_Loader {
 
 	public function __construct() {
 		add_action( 'wp_ajax_pj_rs_get_resource', array( $this, 'ajax_get_image' ) );
-		add_action( 'wp_ajax_pj_rs_proxy_resource' , array( $this, 'ajax_proxy_image' ) );
 	}
 
 	/**
@@ -123,49 +122,6 @@ class Resource_Space_Loader {
 		}
 
 		exit();
-	}
-
-	function ajax_proxy_image() {
-
-		$src = isset( $_GET['src'] ) ? sanitize_text_field( urldecode( $_GET['src'] ) ) : null;
-
-		if ( ! $src ) {
-			die('Please provide an image src.' );
-		}
-
-		$bits_request = parse_url( $src );
-		$bits_allowed = parse_url( PJ_RESOURCE_SPACE_DOMAIN );
-
-		$allowed = isset( $bits_request['host'] ) && isset( $bits_allowed['host'] ) && ( $bits_request['host'] === $bits_allowed['host'] );
-
-		if ( ! $allowed ) {
-			die('Domain not allowed.');
-		}
-
-		$request_args = array(
-			'headers' => array()
-		);
-
-		// Pass basic auth header if available.
-		if ( defined( 'PJ_RESOURCE_SPACE_AUTHL' ) &&  defined( 'PJ_RESOURCE_SPACE_AUTHP' ) ) {
-			$request_args['headers']['Authorization'] = 'Basic ' . base64_encode( PJ_RESOURCE_SPACE_AUTHL . ':' . PJ_RESOURCE_SPACE_AUTHP );
-		}
-
-		$response = wp_remote_get( $src, $request_args );
-
-		if (
-		    'OK' !== wp_remote_retrieve_response_message( $response )
-		    || 200 !== wp_remote_retrieve_response_code( $response )
-		) {
-			die( 'request failed' );
-		}
-
-		foreach ( wp_remote_retrieve_headers( $response ) as $header => $value ) {
-			header( "$header: $value" );
-		}
-
-		echo wp_remote_retrieve_body( $response );
-
 	}
 
 }
