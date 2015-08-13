@@ -42,7 +42,7 @@ class Resource_Space_Loader {
 			'key'              => $key,
 			'search'           => $resource_id,
 			'prettyfieldnames' => 1,
-			'original'         => true,
+			'previewsize'      => 'pre',
 		), $url );
 
 		$request_args = array( 'headers' => array() );
@@ -64,15 +64,34 @@ class Resource_Space_Loader {
 			wp_send_json_error( __( 'Resource not found', 'resourcespace' ) );
 		}
 
-		// All good, continue
-		$file = get_temp_dir() . sanitize_file_name( $data[0]->Original_filename );
+		$attachment_id = $this->sideload_image( $data[0]->preview );
+
+		if ( is_wp_error( $attachment_id ) ) {
+			wp_send_json_error( $attachment_id->get_error_message() );
+		} else {
+			wp_send_json_success( wp_prepare_attachment_for_js( $attachment_id ) );
+		}
+
+		exit();
+
+	}
+
+	private function sideload_image( $url ) {
+
+		$request_args = array( 'headers' => array() );
+
+		// Pass basic auth header if available.
+		if ( defined( 'PJ_RESOURCE_SPACE_AUTHL' ) &&  defined( 'PJ_RESOURCE_SPACE_AUTHP' ) ) {
+			$request_args['headers']['Authorization'] = 'Basic ' . base64_encode( PJ_RESOURCE_SPACE_AUTHL . ':' . PJ_RESOURCE_SPACE_AUTHP );
+		}
 
 		// TODO test. Advice from Kirill was to use the users cookie.
 		// Hopefully it isn't required as this isn't as robust as using basic auth.
-		$response = wp_remote_get( $data[0]->original_link, $request_args );
+		$response = wp_remote_get( $url, $request_args );
 
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 
+			$file = get_temp_dir() . sanitize_file_name( $data[0]->Original_filename );
 			file_put_contents( $file, wp_remote_retrieve_body( $response ) );
 
 			$filename = basename( $file );
@@ -104,24 +123,23 @@ class Resource_Space_Loader {
 
 					add_post_meta( $attachment_id, 'resource_space', true, true );
 
-					wp_send_json_success( wp_prepare_attachment_for_js( $attachment_id ) );
+					return $attachment_id;
 
 				} else {
 					unlink( $file );
-					wp_send_json_error( __( 'Could not create attachment', 'resourcespace' ) );
+					return new WP_Error( 'broke', __( 'Could not create attachment', 'resourcespace' ) );
 				}
 			} else {
 				unlink( $file );
-				wp_send_json_error( __( 'Upload error', 'resourcespace' ) );
+				return new WP_Error( 'broke', __( 'Upload error', 'resourcespace' ) );
 			}
 
 			unlink( $file );
 
 		} else {
-			wp_send_json_error( __( 'Unable to retrieve image', 'resourcespace' ) );
+			return new WP_Error( 'broke', __( 'Unable to retrieve image', 'resourcespace' ) );
 		}
 
-		exit();
 	}
 
 }
