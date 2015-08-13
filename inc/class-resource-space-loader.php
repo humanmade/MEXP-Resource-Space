@@ -42,8 +42,7 @@ class Resource_Space_Loader {
 			'key'              => $key,
 			'search'           => $resource_id,
 			'prettyfieldnames' => 1,
-			'previewsize'      => 'pre',
-			'original'         => true,
+			'previewsize'      => 'scr',
 		), $url );
 
 		$request_args = array( 'headers' => array() );
@@ -66,10 +65,7 @@ class Resource_Space_Loader {
 		}
 
 		// Request original URL.
-		// $attachment_id = wpcom_vip_download_image( $data[0]->original );
-
-		// Request preview size.
-		$attachment_id = wpcom_vip_download_image( $data[0]->preview, $parent_post_id );
+		$attachment_id = wpcom_vip_download_image( $data[0]->preview );
 
 		if ( is_wp_error( $attachment_id ) ) {
 			wp_send_json_error( $attachment_id->get_error_message() );

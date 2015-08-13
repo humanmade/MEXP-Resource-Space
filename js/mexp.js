@@ -114,6 +114,8 @@
 							alert( 'Failed to import image.' );
 						}
 
+						toggleLoading( false );
+
 						return;
 					}
 
