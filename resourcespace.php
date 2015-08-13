@@ -21,6 +21,14 @@ add_action( 'plugins_loaded', function() {
 		wp_die( __( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
 	}
 
+	if ( ! defined( 'PJ_RESOURCE_SPACE_DOMAIN' ) ) {
+		wp_die( __( 'You must define PJ_RESOURCE_SPACE_DOMAIN', 'resourcespace' ) );
+	}
+
+	if ( ! defined( 'PJ_RESOURCE_SPACE_KEY' ) ) {
+		wp_die( __( 'You must define PJ_RESOURCE_SPACE_KEY', 'resourcespace' ) );
+	}
+
 	require_once( __DIR__ . '/helpers.php' );
 	require_once( __DIR__ . '/inc/class-resource-space-loader.php' );
 	require_once( __DIR__ . '/inc/class-resource-space-admin.php' );
