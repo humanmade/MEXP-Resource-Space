@@ -19,6 +19,7 @@ if ( ! class_exists( 'MEXP_Service' ) ) {
 	wp_die( __( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
 }
 
+require_once( __DIR__ . '/helpers.php' );
 require_once( __DIR__ . '/inc/class-resource-space-loader.php' );
 require_once( __DIR__ . '/inc/class-resource-space-admin.php' );
 require_once( __DIR__ . '/inc/class-mexp-resource-space-service.php' );
