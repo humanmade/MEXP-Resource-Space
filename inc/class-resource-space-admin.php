@@ -71,7 +71,7 @@ class Resource_Space_Admin {
 
 	function ajax_query_attachments_args( $query ) {
 
-		if ( isset( $_REQUEST['query']['meta_query'] ) && 'resource_space' === $_REQUEST['query']['meta_query'] ) {
+		if ( isset( $_POST['query']['meta_query'] ) && 'resource_space' === $_POST['query']['meta_query'] ) {
 			$query['meta_query'] = array(
 				array(
 					'key'     => 'resource_space',
