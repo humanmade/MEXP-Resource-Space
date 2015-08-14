@@ -67,6 +67,8 @@ class Resource_Space_Loader {
 		// Request original URL.
 		$attachment_id = wpcom_vip_download_image( $data[0]->preview );
 
+		update_post_meta( $attachment_id, 'resource_space', 1 );
+
 		if ( is_wp_error( $attachment_id ) ) {
 			wp_send_json_error( $attachment_id->get_error_message() );
 		} else {
