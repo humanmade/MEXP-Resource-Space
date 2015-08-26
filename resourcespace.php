@@ -36,7 +36,7 @@ add_action( 'plugins_loaded', function() {
 	require_once( __DIR__ . '/inc/class-mexp-resource-space-template.php' );
 
 	Resource_Space_Loader::get_instance();
-	// Resource_Space_Admin::get_instance();
+	Resource_Space_Admin::get_instance();
 
 });
 
