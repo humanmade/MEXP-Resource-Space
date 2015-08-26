@@ -82,7 +82,7 @@ add_action( 'admin_print_scripts-post-new.php', 'resource_space_vc_script' );
  */
 add_action( 'admin_init', function() {
 
-	if ( version_compare( PJ_RESOURCESPACE_PLUGIN_VERSION, get_option( 'pj_resourcespace_version'), '<=' ) ) {
+	if ( version_compare( PJ_RESOURCESPACE_PLUGIN_VERSION, get_option( 'pj_resourcespace_version' ), '<=' ) ) {
 		return;
 	}
 

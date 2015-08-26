@@ -88,7 +88,7 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 				'date'        => strtotime( $resource->creation_date ),
 				'id'          => $resource->ref,
 				'thumbnail'   => $resource->preview,
-				'url'         => $resource->original_link,
+				'url'         => null,
 			);
 
 			$dirty_data = apply_filters( 'resourcespace_parse_raw_image_data', $dirty_data, $resource );

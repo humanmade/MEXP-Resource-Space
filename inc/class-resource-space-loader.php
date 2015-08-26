@@ -42,6 +42,7 @@ class Resource_Space_Loader {
 			'key'              => $key,
 			'search'           => $resource_id,
 			'prettyfieldnames' => 1,
+			'original'         => true,
 			'previewsize'      => 'scr',
 		), $url );
 
