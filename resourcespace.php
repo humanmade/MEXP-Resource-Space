@@ -15,7 +15,7 @@ define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FIL
 
 defined( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE' ) or define( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE', 10 );
 
-add_action( 'plugins_loaded', function() {
+add_action( 'init', function() {
 
 	if ( ! class_exists( 'MEXP_Service' ) ) {
 		wp_die( __( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
@@ -38,7 +38,7 @@ add_action( 'plugins_loaded', function() {
 	Resource_Space_Loader::get_instance();
 	Resource_Space_Admin::get_instance();
 
-});
+}, 9 );
 
 add_filter( 'mexp_services', function( array $services ) {
 
