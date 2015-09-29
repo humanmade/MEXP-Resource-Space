@@ -77,6 +77,23 @@ add_action( 'admin_print_scripts-post.php', 'resource_space_vc_script' );
 add_action( 'admin_print_scripts-post-new.php', 'resource_space_vc_script' );
 
 /**
+ * Resourcespace featured image Script.
+ * @return null
+ */
+function resource_space_featured_image_script() {
+
+	if ( ! current_user_can( 'insert_from_resourcespace' ) ) {
+		return;
+	}
+
+	wp_enqueue_script( 'resource-space-featured-image', plugins_url( 'js/featured-image.js', __FILE__ ), array( 'backbone' ), null, true );
+
+}
+
+add_action( 'admin_print_scripts-post.php', 'resource_space_featured_image_script' );
+add_action( 'admin_print_scripts-post-new.php', 'resource_space_featured_image_script' );
+
+/**
  * Add the resourcespace MEXP capability for required roles.
  * Note - version check to ensure this isn't fired always as it writes to the database.d
  */
