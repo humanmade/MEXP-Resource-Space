@@ -10,9 +10,9 @@ Domain Path: /languages
 */
 
 define( 'PJ_RESOURCESPACE_PLUGIN_VERSION', '0.1' );
-define( 'PJ_RESOURCE_SPACE_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
-define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
+defined( 'PJ_RESOURCE_SPACE_PLUGIN_DIR' ) OR define( 'PJ_RESOURCE_SPACE_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
+defined( 'PJ_RESOURCE_SPACE_PLUGIN_URL' ) OR define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 defined( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE' ) or define( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE', 10 );
 
 add_action( 'init', function() {
@@ -115,3 +115,71 @@ add_action( 'admin_init', function() {
     }
 
 } );
+
+add_filter( 'resourcespace_import_complete', function( $attachment_id, $resource ) {
+
+	hm_log( $resource );
+
+	$post_array = array( 'ID' => $attachment_id );
+
+	if ( isset( $resource->field8 ) ) {
+		$post_array['post_title'] = sanitize_text_field( $resource->field8 );
+	}
+
+	if ( isset( $resource->field18 ) ) {
+		$post_array['post_content'] = wp_kses_post( $resource->field18 );
+	}
+
+	// Only update if there is more data than just the ID.
+	if ( count( $post_array ) > 1 ) {
+		wp_update_post( $post_array );
+	}
+
+	if ( isset( $resource->field10 ) ) {
+		update_post_meta( $attachment_id, 'aleteia_media_copyright', sanitize_text_field( $resource->field10 ) );
+	}
+
+}, 10, 2 );
+
+/**
+ * Add custom attachment meta fields
+ *
+ * @param array $form_fields
+ * @param object $post
+ * @return array
+ */
+function aleteia_attachment_fields_to_edit( $form_fields, $post ) {
+	// Copyright text
+	$form_fields['aleteia_media_copyright']['label'] = __( 'Copyright Text', 'aleteia' );
+	$form_fields['aleteia_media_copyright']['input'] = 'textarea';
+	$form_fields['aleteia_media_copyright']['value'] = get_post_meta( $post->ID, 'aleteia_media_copyright', true );
+	// Copyright Link
+	$form_fields['aleteia_media_copyright_link']['label'] = __( 'Copyright Link', 'aleteia' );
+	$form_fields['aleteia_media_copyright_link']['input'] = 'text';
+	$form_fields['aleteia_media_copyright_link']['value'] = get_post_meta( $post->ID, 'aleteia_media_copyright_link', true );
+	return $form_fields;
+}
+add_filter( 'attachment_fields_to_edit', 'aleteia_attachment_fields_to_edit', null, 2 );
+/**
+ * Save custom attachment meta fields
+ *
+ * @param array $post
+ * @param array $attachment
+ * @return array
+ */
+function aleteia_attachment_fields_to_save( $post, $attachment ) {
+	// Copyright text
+	if ( isset( $attachment['aleteia_media_copyright'] ) && $attachment['aleteia_media_copyright'] ) {
+		update_post_meta( $post['ID'], 'aleteia_media_copyright', sanitize_text_field( $attachment['aleteia_media_copyright'] ) );
+	} else if ( isset( $attachment['aleteia_media_copyright'] ) ) {
+		delete_post_meta( $post['ID'], 'aleteia_media_copyright' );
+	}
+	// Copyright Link
+	if ( isset( $attachment['aleteia_media_copyright_link'] ) && $attachment['aleteia_media_copyright_link'] ) {
+		update_post_meta( $post['ID'], 'aleteia_media_copyright_link', sanitize_text_field( $attachment['aleteia_media_copyright_link'] ) );
+	} else if ( isset( $attachment['aleteia_media_copyright_link'] ) ) {
+		delete_post_meta( $post['ID'], 'aleteia_media_copyright_link' );
+	}
+	return $post;
+}
+add_filter( 'attachment_fields_to_save','aleteia_attachment_fields_to_save', null, 2 );
