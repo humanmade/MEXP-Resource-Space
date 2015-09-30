@@ -41,7 +41,7 @@ class Resource_Space_Loader {
 		$url = add_query_arg( array(
 			'key'              => $key,
 			'search'           => $resource_id,
-			'prettyfieldnames' => 1,
+			'prettyfieldnames' => false,
 			'original'         => true,
 			'previewsize'      => 'scr',
 		), $url );
