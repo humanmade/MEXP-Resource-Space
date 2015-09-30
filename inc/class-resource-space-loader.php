@@ -72,7 +72,7 @@ class Resource_Space_Loader {
 		update_post_meta( $attachment_id, 'resource_space', 1 );
 
 		// Allow plugins to hook in here.
-		do_action( 'resourcespace_import_complete', $attachment_id, $resource );
+		do_action( 'resourcespace_import_complete', $attachment_id, $data[0] );
 
 		if ( is_wp_error( $attachment_id ) ) {
 			wp_send_json_error( $attachment_id->get_error_message() );
