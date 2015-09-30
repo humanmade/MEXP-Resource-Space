@@ -115,20 +115,3 @@ add_action( 'admin_init', function() {
     }
 
 } );
-
-add_filter( 'resourcespace_import_complete', function( $data, $resource ) {
-
-	$post_array = array(
-		'ID' => $attachment_id,
-		// 'post_content' => isset( $resource->Title ) ? sanitize_text_field( $resource->Title ),
-	);
-
-	if ( isset( $resource->Title ) ) {
-		$post_array['post_title'] = sanitize_text_field( $resource->Title );
-	}
-
-	if ( count( $post_array ) > 1 ) {
-		wp_update_post( $post_array );
-	}
-
-}, 10, 2 );
