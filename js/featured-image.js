@@ -7,30 +7,8 @@
 		wp.media.controller.FeaturedImage = controller.extend({
 
 			initialize: function() {
-
-				var self = this;
-
 				wp.media.controller.FeaturedImage.__super__.initialize.apply( this );
-
-				if ( ! wp.media.frames.resourceSpaceFeaturedImageFrame ) {
-
-					// Bit of an odd hack. But we have to set this to a non-falsey value
-					// in order to prevent infinite loop when creating the new frame.
-					wp.media.frames.resourceSpaceFeaturedImageFrame = 1;
-
-					wp.media.frames.resourceSpaceFeaturedImageFrame = wp.media({
-						frame : "post",
-						state : 'mexp-service-resource-space',
-						resourceSpaceInsertCallback: function() {
-							var selection   = self.get( 'selection' );
-							var attachments = ( this.attachments.length ) ? [ this.attachments[0] ] : [];
-							selection.reset( attachments );
-
-							this.complete();
-						},
-					});
-				}
-
+				this.initResourceSpaceFrame();
 			},
 
 			activate: function() {
@@ -86,6 +64,36 @@
 				} );
 
 			},
+
+			initResourceSpaceFrame: function() {
+
+				if ( ! wp.media.frames.resourceSpaceFeaturedImageFrame ) {
+
+					var self = this;
+
+					// Bit of an odd hack. But we have to set this to a non-falsey value
+					// in order to prevent infinite loop when creating the new frame.
+					wp.media.frames.resourceSpaceFeaturedImageFrame = 1;
+
+					wp.media.frames.resourceSpaceFeaturedImageFrame = wp.media({
+						frame : "post",
+						state : 'mexp-service-resource-space',
+						resourceSpaceInsertCallback: function() {
+							var selection   = self.get( 'selection' );
+							var attachments = ( this.attachments.length ) ? [ this.attachments[0] ] : [];
+							selection.reset( attachments );
+							this.complete();
+
+							if ( attachments.length ) {
+								wp.media.featuredImage.set( attachments[0].id );
+							}
+
+							wp.media.frame.close();
+						},
+					});
+				}
+
+			}
 
 		} );
 
