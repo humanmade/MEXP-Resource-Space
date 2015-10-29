@@ -16,7 +16,7 @@ define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FIL
 defined( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE' ) or define( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE', 10 );
 
 if ( ! class_exists( 'MEXP_Service' ) ) {
-	wp_die( __( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
+	wp_die( esc_html__( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
 }
 
 require_once( __DIR__ . '/inc/class-resource-space-loader.php' );
@@ -54,8 +54,8 @@ function resource_space_vc_script() {
 	wp_enqueue_script( 'resource-space-vc', plugins_url( 'js/resource-space-vc.js', __FILE__ ), array( 'wpb_jscomposer_media_editor_js' ), null, true );
 
 	wp_localize_script( 'resource-space-vc', 'resourceSpaceVC', array(
-		'stockImagesTabText'    => __( 'Stock Images', 'resourcespace' ),
-		'stockImagesInsertText' => __( 'Import', 'resourcespace' ),
+		'stockImagesTabText'    => esc_html__( 'Stock Images', 'resourcespace' ),
+		'stockImagesInsertText' => esc_html__( 'Import', 'resourcespace' ),
 	) );
 
 }
