@@ -151,9 +151,9 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 	 */
 	public function labels( array $labels ) {
 	 	$labels['resource-space'] = array(
-			'insert'    => __( 'Insert Image', 'resourcespace' ),
-			'noresults' => __( 'No images matched your search query.', 'resourcespace' ),
-			'title'     => __( 'Insert Stock Photo', 'resourcespace' ),
+			'insert'    => esc_html__( 'Insert Image', 'resourcespace' ),
+			'noresults' => esc_html__( 'No images matched your search query.', 'resourcespace' ),
+			'title'     => esc_html__( 'Insert Stock Photo', 'resourcespace' ),
 		);
 
 	 	return $labels;

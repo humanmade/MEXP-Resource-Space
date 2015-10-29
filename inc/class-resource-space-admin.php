@@ -39,8 +39,8 @@ class Resource_Space_Admin {
 	function admin_menu() {
 
 		add_media_page(
-			__( 'Stock Photos', 'resourcespace' ),
-			__( 'Stock Photos', 'resourcespace' ),
+			esc_html__( 'Stock Photos', 'resourcespace' ),
+			esc_html__( 'Stock Photos', 'resourcespace' ),
 			'insert_from_resourcespace',
 			'resourcespace',
 			array( $this, 'render_page' )
