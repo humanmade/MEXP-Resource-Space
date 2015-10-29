@@ -32,7 +32,7 @@ class Resource_Space_Loader {
 		$parent_post_id = isset( $_POST['post'] ) ? intval( $_POST['post'] ) : 0;
 
 		if ( empty( $resource_id ) ) {
-			wp_send_json_error( __( 'Empty resource id', 'resourcespace' ) );
+			wp_send_json_error( esc_html__( 'Empty resource id', 'resourcespace' ) );
 		}
 
 		$url = PJ_RESOURCE_SPACE_DOMAIN . '/plugins/api_search/';
@@ -58,11 +58,11 @@ class Resource_Space_Loader {
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 			$data = json_decode( wp_remote_retrieve_body( $response ) );
 		} else {
-			wp_send_json_error( __( 'Unable to query API', 'resourcespace' ) );
+			wp_send_json_error( esc_html__( 'Unable to query API', 'resourcespace' ) );
 		}
 
 		if ( count( $data ) < 1 ) {
-			wp_send_json_error( __( 'Resource not found', 'resourcespace' ) );
+			wp_send_json_error( esc_html__( 'Resource not found', 'resourcespace' ) );
 		}
 
 		// Request original URL.
@@ -132,17 +132,17 @@ class Resource_Space_Loader {
 
 				} else {
 					unlink( $file );
-					return new WP_Error( 'broke', __( 'Could not create attachment', 'resourcespace' ) );
+					return new WP_Error( 'broke', esc_html__( 'Could not create attachment', 'resourcespace' ) );
 				}
 			} else {
 				unlink( $file );
-				return new WP_Error( 'broke', __( 'Upload error', 'resourcespace' ) );
+				return new WP_Error( 'broke', esc_html__( 'Upload error', 'resourcespace' ) );
 			}
 
 			unlink( $file );
 
 		} else {
-			return new WP_Error( 'broke', __( 'Unable to retrieve image', 'resourcespace' ) );
+			return new WP_Error( 'broke', esc_html__( 'Unable to retrieve image', 'resourcespace' ) );
 		}
 
 	}
