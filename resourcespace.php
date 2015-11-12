@@ -118,8 +118,6 @@ add_action( 'admin_init', function() {
 
 add_filter( 'resourcespace_import_complete', function( $attachment_id, $resource ) {
 
-	hm_log( $resource );
-
 	$post_array = array( 'ID' => $attachment_id );
 
 	if ( isset( $resource->field8 ) ) {
