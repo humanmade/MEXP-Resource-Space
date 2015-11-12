@@ -9,7 +9,7 @@ Text Domain: resourcespace
 Domain Path: /languages
 */
 
-define( 'PJ_RESOURCESPACE_PLUGIN_VERSION', '0.1' );
+define( 'PJ_RESOURCESPACE_PLUGIN_VERSION', '0.2' );
 
 defined( 'PJ_RESOURCE_SPACE_PLUGIN_DIR' ) OR define( 'PJ_RESOURCE_SPACE_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 defined( 'PJ_RESOURCE_SPACE_PLUGIN_URL' ) OR define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
