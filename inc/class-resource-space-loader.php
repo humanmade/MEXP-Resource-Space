@@ -35,17 +35,15 @@ class Resource_Space_Loader {
 			wp_send_json_error( esc_html__( 'Empty resource id', 'resourcespace' ) );
 		}
 
-		$url = PJ_RESOURCE_SPACE_DOMAIN . '/plugins/api_search/';
-		$key = PJ_RESOURCE_SPACE_KEY;
-
-		$url = add_query_arg( array(
-			'key'              => $key,
+		$args = array_map( 'rawurlencode', array(
+			'key'              => PJ_RESOURCE_SPACE_KEY,
 			'search'           => $resource_id,
 			'prettyfieldnames' => false,
 			'original'         => true,
 			'previewsize'      => 'scr',
-		), $url );
+		) );
 
+		$url          = add_query_arg( $args, PJ_RESOURCE_SPACE_DOMAIN . '/plugins/api_search/' );
 		$request_args = array( 'headers' => array() );
 
 		// Pass basic auth header if available.
