@@ -54,7 +54,6 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 				'search'           => sanitize_text_field( $request['params']['q'] ),
 				'key'              => PJ_RESOURCE_SPACE_KEY,
 				'previewsize'      => 'pre',
-				'prettyfieldnames' => true,
 				'original'         => true,
 				'results_per_page' => PJ_RESOURCE_SPACE_RESULTS_PER_PAGE,
 				'page'             => absint( $request['page'] ),
