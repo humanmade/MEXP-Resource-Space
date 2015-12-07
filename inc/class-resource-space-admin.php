@@ -65,13 +65,18 @@ class Resource_Space_Admin {
 			$deps = array( 'jquery', 'backbone', 'media' );
 			wp_enqueue_script( 'resource-space-admin', PJ_RESOURCE_SPACE_PLUGIN_URL . '/js/admin.js', $deps, PJ_RESOURCESPACE_PLUGIN_VERSION, true );
 
+			wp_localize_script( 'media-grid', '_wpMediaGridSettings', array(
+				'adminUrl' => parse_url( self_admin_url(), PHP_URL_PATH ),
+				'queryVars' => (object) array( 'meta_query' => 'resource_space' ),
+			) );
+
 		}
 
 	}
 
 	function ajax_query_attachments_args( $query ) {
 
-		if ( isset( $_REQUEST['query']['meta_query'] ) && 'resource_space' === $_REQUEST['query']['meta_query'] ) {
+		if ( isset( $_POST['query']['meta_query'] ) && 'resource_space' === $_POST['query']['meta_query'] ) {
 			$query['meta_query'] = array(
 				array(
 					'key'     => 'resource_space',

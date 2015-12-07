@@ -9,23 +9,36 @@ Text Domain: resourcespace
 Domain Path: /languages
 */
 
-define( 'PJ_RESOURCESPACE_PLUGIN_VERSION', '0.1' );
-define( 'PJ_RESOURCE_SPACE_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
-define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
+define( 'PJ_RESOURCESPACE_PLUGIN_VERSION', '0.2' );
 
+defined( 'PJ_RESOURCE_SPACE_PLUGIN_DIR' ) OR define( 'PJ_RESOURCE_SPACE_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
+defined( 'PJ_RESOURCE_SPACE_PLUGIN_URL' ) OR define( 'PJ_RESOURCE_SPACE_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 defined( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE' ) or define( 'PJ_RESOURCE_SPACE_RESULTS_PER_PAGE', 10 );
 
-if ( ! class_exists( 'MEXP_Service' ) ) {
-	wp_die( esc_html__( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
-}
+add_action( 'init', function() {
 
-require_once( __DIR__ . '/inc/class-resource-space-loader.php' );
-require_once( __DIR__ . '/inc/class-resource-space-admin.php' );
-require_once( __DIR__ . '/inc/class-mexp-resource-space-service.php' );
-require_once( __DIR__ . '/inc/class-mexp-resource-space-template.php' );
+	if ( ! class_exists( 'MEXP_Service' ) ) {
+		wp_die( esc_html__( 'Media Explorer plugin must be enabled.', 'resourcespace' ) );
+	}
 
-Resource_Space_Loader::get_instance();
-Resource_Space_Admin::get_instance();
+	if ( ! defined( 'PJ_RESOURCE_SPACE_DOMAIN' ) ) {
+		wp_die( __( 'You must define PJ_RESOURCE_SPACE_DOMAIN', 'resourcespace' ) );
+	}
+
+	if ( ! defined( 'PJ_RESOURCE_SPACE_KEY' ) ) {
+		wp_die( __( 'You must define PJ_RESOURCE_SPACE_KEY', 'resourcespace' ) );
+	}
+
+	require_once( __DIR__ . '/helpers.php' );
+	require_once( __DIR__ . '/inc/class-resource-space-loader.php' );
+	require_once( __DIR__ . '/inc/class-resource-space-admin.php' );
+	require_once( __DIR__ . '/inc/class-mexp-resource-space-service.php' );
+	require_once( __DIR__ . '/inc/class-mexp-resource-space-template.php' );
+
+	Resource_Space_Loader::get_instance();
+	Resource_Space_Admin::get_instance();
+
+}, 9 );
 
 add_filter( 'mexp_services', function( array $services ) {
 
@@ -64,12 +77,29 @@ add_action( 'admin_print_scripts-post.php', 'resource_space_vc_script' );
 add_action( 'admin_print_scripts-post-new.php', 'resource_space_vc_script' );
 
 /**
+ * Resourcespace featured image Script.
+ * @return null
+ */
+function resource_space_featured_image_script() {
+
+	if ( ! current_user_can( 'insert_from_resourcespace' ) ) {
+		return;
+	}
+
+	wp_enqueue_script( 'resource-space-featured-image', plugins_url( 'js/featured-image.js', __FILE__ ), array( 'backbone' ), null, true );
+
+}
+
+add_action( 'admin_print_scripts-post.php', 'resource_space_featured_image_script' );
+add_action( 'admin_print_scripts-post-new.php', 'resource_space_featured_image_script' );
+
+/**
  * Add the resourcespace MEXP capability for required roles.
  * Note - version check to ensure this isn't fired always as it writes to the database.d
  */
 add_action( 'admin_init', function() {
 
-	if ( version_compare( PJ_RESOURCESPACE_PLUGIN_VERSION, get_option( 'pj_resourcespace_version'), '<=' ) ) {
+	if ( version_compare( PJ_RESOURCESPACE_PLUGIN_VERSION, get_option( 'pj_resourcespace_version' ), '<=' ) ) {
 		return;
 	}
 
