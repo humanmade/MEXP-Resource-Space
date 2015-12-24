@@ -4,6 +4,8 @@
 
 		var controller = wp.media.controller.FeaturedImage;
 
+		var resourceSpaceFrame = null;
+
 		wp.media.controller.FeaturedImage = controller.extend({
 
 			initialize: function() {
@@ -36,32 +38,41 @@
 
 			resourceSpaceRenderTab: function() {
 
-				var resourceSpaceFrame = wp.media.frames.resourceSpaceFeaturedImageFrame;
+				if ( resourceSpaceFrame ) {
+					resourceSpaceFrame.open();
+					return;
+				}
+
+				resourceSpaceFrame = wp.media.frames.resourceSpaceFeaturedImageFrame;
+
+				resourceSpaceFrame.on( 'open', function() {
+
+					// Switch content view back to browse in the original frame.
+					var routerView = wp.media.frame.views.get( '.media-frame-router' )[0];
+					routerView.controller.content.mode('browse');
+
+					window.setTimeout( function() {
+
+						// Ensure that the resource space frame is on top.
+						resourceSpaceFrame.$el.closest('.media-modal').parent().appendTo( 'body' );
+
+						// Hide all other menu options in the frame.
+						resourceSpaceFrame.$el.addClass( 'hide-menu' );
+
+					}, 1 );
+
+					// Slightly hcky workaround because for some reason the load more
+					// button doesn't exist when the event callback is attached.
+					$('#resource-space-loadmore').on('click', function(e) {
+						var view = resourceSpaceFrame.views.get('.media-frame-content' );
+						if ( view.length ) {
+							view[0].paginate(e);
+						}
+					} );
+
+				} )
 
 				resourceSpaceFrame.open();
-
-				// Switch content view back to browse in the original frame.
-				var routerView = wp.media.frame.views.get( '.media-frame-router' )[0];
-				routerView.controller.content.mode('browse');
-
-				window.setTimeout( function() {
-
-					// Ensure that the resource space frame is on top.
-					resourceSpaceFrame.$el.closest('.media-modal').parent().appendTo( 'body' );
-
-					// Hide all other menu options in the frame.
-					resourceSpaceFrame.$el.addClass( 'hide-menu' );
-
-				}, 1 );
-
-				// Slightly hcky workaround because for some reason the load more
-				// button doesn't exist when the event callback is attached.
-				$('#resource-space-loadmore').on('click', function(e) {
-					var view = wp.media.frames.resourceSpaceFrame.views.get('.media-frame-content' );
-					if ( view.length ) {
-						view[0].paginate(e);
-					}
-				} );
 
 			},
 
