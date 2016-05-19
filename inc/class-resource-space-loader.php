@@ -69,7 +69,8 @@ class Resource_Space_Loader {
 		// $attachment_id = $this->sideload_image( $data[0]->original );
 
 		// Request preview size.
-		$attachment_id = $this->sideload_image( $data[0]->preview );
+		$file_url = preg_replace('/\?.*/', '', $data[0]->preview);
+		$attachment_id = $this->sideload_image( $file_url );
 
 		if ( is_wp_error( $attachment_id ) ) {
 			wp_send_json_error( $attachment_id->get_error_message() );
@@ -96,7 +97,7 @@ class Resource_Space_Loader {
 
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 
-			$file = get_temp_dir() . sanitize_file_name( $data[0]->Original_filename );
+			$file = get_temp_dir() . sanitize_file_name( $url );
 			file_put_contents( $file, wp_remote_retrieve_body( $response ) );
 
 			$filename = basename( $file );

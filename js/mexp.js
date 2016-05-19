@@ -150,7 +150,7 @@
 
 	var view = media.view.MEXP
 
-	media.view.MEXP = view.extend( {
+	view = view.extend( {
 
 		noMorePosts: false,
 

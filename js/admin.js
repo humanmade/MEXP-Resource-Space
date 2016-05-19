@@ -1,6 +1,6 @@
 (function ( $ ) {
 
-	var $oldContainer = ('#resource-space-images');
+	var $oldContainer = $('#resource-space-images');
 	var $newContainer = $('#resource-space-new-images');
 
 	jQuery('#resource-space-add-new').on( 'click', function( event ) {
