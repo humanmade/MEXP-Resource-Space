@@ -49,10 +49,14 @@ class MEXP_Resource_Space_Service extends MEXP_Service {
 		// Ensure that 'page' is never 0. This breaks things.
 		$request['page'] = ( $request['page'] < 1 ) ? 1 : $request['page'];
 
+		// Get search term
+		$search_term = sanitize_text_field( $request['params']['q'] );
+		$search_term = str_replace(' ', '%20', $search_term);
+
 		// Build the request URL.
 		$api_url = add_query_arg(
 			apply_filters( 'resourcespace_request_args', array(
-				'search'           => sanitize_text_field( $request['params']['q'] ),
+				'search'           => $search_term,
 				'key'              => PJ_RESOURCE_SPACE_KEY,
 				'previewsize'      => 'pre',
 				'prettyfieldnames' => true,
